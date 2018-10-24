@@ -1,12 +1,11 @@
 import datetime, xlrd
-#import mysqlclient
 
 book = xlrd.open_workbook("/home/adrianaedc/Documentos/Compra y Ventas Enero 2011.xls")
 print("Numero de hojas de trabajo: {0}".format(book.nsheets))
 print("Nombre de hoja de trabajo: {0}".format(book.sheet_names()))
 sh = book.sheet_by_name('Ventas Enero 2011')
 print("\nHoja de trabajo actual: {0}, \nNumero de Filas: {1},\tNumero de Columnas: {2}\n".format(sh.name, sh.nrows, sh.ncols))
-print("Celda N55 es {0}\n".format(sh.cell_value(rowx=54, colx=13)))
+
 for r in range(15, sh.nrows-16):
     if sh.cell(r,1).value != "":
         #Fecha
@@ -66,3 +65,6 @@ for r in range(15, sh.nrows-16):
             total = 0
         else:
             total = float("{0:.2f}".format(sh.cell(r,16).value,2))
+        # Reportez es un modelo previamente definido en models.py y existente en la BD
+        TempReporte = Reportez(fecha = fdate, maquina_f = maq, fk_mf = fkmaq.id, nreportez = repz, inicial = inicial, final = final, base_nc = base_nc, alicuota_nc = alicuota_nc, iva_nc = iva_nc, base_c = base_c, alicuota_c = alicuota_c, iva_c = iva_c, total = total)
+        TempReporte.save()
